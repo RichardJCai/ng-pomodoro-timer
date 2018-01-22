@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class SessionInformationService {
+  startTimeInformation: Date;
   startTime: Date;
-  currentTime: Date;
   sessionDuration: number;
-  sessionType: string;
+  sessionType: number;
   taskName: string;
+  elapsedTime: number;
 
   constructor() { }
 
@@ -16,6 +17,10 @@ export class SessionInformationService {
 
   getStartTime(time) {
     return this.startTime;
+  }
+
+  setSessionDuration(duration: number) {
+    this.sessionDuration = duration;
   }
 
 }
