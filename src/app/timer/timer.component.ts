@@ -10,6 +10,8 @@ import { TimerObservable } from 'rxjs/observable/TimerObservable';
 })
 export class TimerComponent implements OnInit {
   public sessionType = 0;
+  public workDuration: number;
+  public breakDuration: number;
 
   private tick: number;
   private sessionInformation: SessionInformationService;
@@ -18,8 +20,7 @@ export class TimerComponent implements OnInit {
   private timeElapsed = 0;
   private timeRemaining = 0;
   private subscription: Subscription;
-  private workDuration: number;
-  private breakDuration: number;
+
 
   constructor() {
     // Load from db if user is logged in

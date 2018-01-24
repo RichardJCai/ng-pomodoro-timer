@@ -1,31 +1,20 @@
 
 <div class = "col" id="main">
-  <div *ngIf="!isSessionActive()"class='row'>
-    <form>
-      <!--Add gear to show settings for setting the durations.-->
-      <div>
-        <label for="workDuration">Work Duration</label>
-        <input type="number" class="form-control" id="workDuration" name="workDuration" #workDurationInput>
-        <p>{{workDurationInput.value}}</p>
-      </div>
-      <button type="submit" class="btn btn-success" on-click='setWorkDuration(workDurationInput.value)'>Submit</button>
-
-      <div>
-        <label for="breakDuration">Break Duration</label>
-        <input type="number" class="form-control" id="breakDuration" name="breakDuration" #breakDurationInput>
-        <p>{{breakDurationInput.value}}</p>
-      </div>
-      <button type="submit" class="btn btn-success" on-click='setBreakDuration(breakDurationInput.value)'>Submit</button>
-    </form>
-  </div>
-  <div class="row">
-    <div *ngIf='isSessionActive()'>{{getSessionDuration() - getTimeElapsed()}}</div>
-    <div *ngIf='isSessionActive()'>{{sessionType === 0 ? "Work" : "Break"}}</div>
+  <div class="circleBase type3">
+    <div class="row">
+      <div *ngIf='isSessionActive()'>{{getSessionDuration() - getTimeElapsed()}}</div>
+      <div *ngIf='isSessionActive()'>{{sessionType === 0 ? "Work" : "Break"}}</div>
+    </div>
   </div>
   <hr>
   <div class="row">
     <button type="button" class="btn btn-success" on-click='onStart()' [disabled]='isSessionActive()'>Start</button>
     <button class="btn btn-danger" on-click='onStop()' [disabled]='!isSessionActive()'>Stop</button>
     <button class="btn btn-warning" on-click='onPause()'>Pause</button>
+  </div>
+
+  <div *ngIf="!isSessionActive()"class='row'>
+    <!--Add gear to toggle settings-->
+    <app-set-duration (breakDurationChange)='setBreakDuration($event)' (workDurationChange)='setWorkDuration($event)'></app-set-duration>
   </div>
 </div>
