@@ -9,6 +9,7 @@ import { OptionsComponent } from './options/options.component';
 import { StatisicsComponent } from './statisics/statisics.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { CountdownComponent } from './countdown/countdown.component';
+import { SetDurationComponent } from './set-duration/set-duration.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { CountdownComponent } from './countdown/countdown.component';
     OptionsComponent,
     StatisicsComponent,
     ToolbarComponent,
-    CountdownComponent
+    CountdownComponent,
+    SetDurationComponent
   ],
   imports: [
     BrowserModule,
