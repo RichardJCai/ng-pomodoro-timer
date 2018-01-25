@@ -76,8 +76,19 @@ export class TimerComponent implements OnInit {
   }
 
   sessionDone() {
+    const audio = new Audio();
+    audio.src = '../assets/sounds/alarm/analog-alarm.wav';
+    audio.play();
+    const notificationMsg = this.sessionType === 0 ? 'Work session complete! Take a break' :
+      'Your break is over! Get back to work!';
+    Notification.requestPermission(permission => {
+      if (permission === 'granted') {
+        const notification = new Notification(notificationMsg);
+      }
+    });
+
     this.sessionType = this.sessionType === 0 ? 1 : 0;
-    confirm('press a button to start next session');
+    // confirm('press a button to start next session');
     if (this.sessionType === 0) {
       this.startNewSession(this.workDuration, 0);
     } else {
