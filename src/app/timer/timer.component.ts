@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { SessionInformationService } from '../session-information.service';
 import { Subscription } from 'rxjs/Subscription';
 import { TimerObservable } from 'rxjs/observable/TimerObservable';
@@ -8,13 +8,15 @@ import { TimerObservable } from 'rxjs/observable/TimerObservable';
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.css']
 })
+
 export class TimerComponent implements OnInit {
+  @ViewChild('circleCountdown') circleCountdown
   public sessionType = 0;
   public workDuration: number;
   public breakDuration: number;
+  public sessionInformation: SessionInformationService;
 
   private tick: number;
-  private sessionInformation: SessionInformationService;
   private sessionPaused: boolean;
   private sessionActive: boolean;
   private timeElapsed = 0;
@@ -37,17 +39,19 @@ export class TimerComponent implements OnInit {
     if (this.sessionPaused) {
       this.timeRemaining = this.sessionInformation.sessionDuration - this.timeElapsed;
       this.startNewSession(this.timeRemaining, this.sessionType);
+      this.circleCountdown.onResume(this.sessionInformation.sessionDuration)
     } else {
       this.subscription.unsubscribe();
       this.sessionPaused = true;
+      this.circleCountdown.onPause()
     }
-    console.log(this.sessionPaused);
   }
 
   onStop() {
     this.subscription.unsubscribe();
     this.sessionActive = false;
     this.timeElapsed = 0;
+    this.circleCountdown.onStop()
   }
 
   private startNewSession(duration, sessionType) {
@@ -59,6 +63,7 @@ export class TimerComponent implements OnInit {
     const currentTime = new Date();
     this.sessionInformation.setStartTime(currentTime);
     this.sessionInformation.setSessionDuration(duration);
+    this.circleCountdown.countdown(duration, true);
     const timer = TimerObservable.create(0, 1000);
     this.subscription = timer.subscribe( t => {
       this.timeElapsed = t;

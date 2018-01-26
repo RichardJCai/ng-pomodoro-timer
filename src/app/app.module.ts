@@ -10,6 +10,7 @@ import { StatisicsComponent } from './statisics/statisics.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { CountdownComponent } from './countdown/countdown.component';
 import { SetDurationComponent } from './set-duration/set-duration.component';
+import { CircleCountdownComponent } from './circle-countdown/circle-countdown.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { SetDurationComponent } from './set-duration/set-duration.component';
     StatisicsComponent,
     ToolbarComponent,
     CountdownComponent,
-    SetDurationComponent
+    SetDurationComponent,
+    CircleCountdownComponent
   ],
   imports: [
     BrowserModule,

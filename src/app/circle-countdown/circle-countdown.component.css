@@ -1,0 +1,15 @@
+.circle-container {
+  display: flex;
+  margin: auto;
+}
+
+svg {
+  -webkit-transform: rotate(-90deg);
+   transform: rotate(-90deg);
+}
+
+.circle-animation {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  transition: all 1s linear;
+}
