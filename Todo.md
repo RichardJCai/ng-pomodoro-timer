@@ -11,5 +11,5 @@
   * Add task name
 * Background image
 * Add gear to show and hide settings
-  
-  
+* Keyboard shortcuts
+* Make into PWA using Ionic
