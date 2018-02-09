@@ -34,8 +34,11 @@ export class CircleCountdownComponent implements OnInit {
     } else {
       currentDuration = duration - this.elapsedTime
     }
+
+    // Tick once
+    this.circleStrokeDashOffset -= (this.initialStrokeDashOffset / this.duration)
+
     this.countDown = setInterval(() => {
-      console.log(this.circleStrokeDashOffset)
       this.circleStrokeDashOffset -= (this.initialStrokeDashOffset / this.duration)
       if (this.circleStrokeDashOffset < 0) {
         this.circleStrokeDashOffset = 0
