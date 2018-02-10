@@ -6,9 +6,10 @@
   * ~~Play sound~~
   * ~~Chrome notifcation~~
 * Settings page
-  * Long breaks
+  * ~Long breaks~
   * Notification types
   * Add task name
+* Local Storage / Firebase db
 * Background image
 * Add gear to show and hide settings
 * Keyboard shortcuts
