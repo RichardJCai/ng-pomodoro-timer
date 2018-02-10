@@ -24,7 +24,7 @@ export class SetDurationComponent implements OnInit {
 
   setBreakDuration(duration: number) {
     this.breakDuration = duration;
-    this.breakDurationChange.emit(this.workDuration);
+    this.breakDurationChange.emit(this.breakDuration);
   }
 
 }

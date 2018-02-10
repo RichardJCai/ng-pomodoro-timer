@@ -3,7 +3,7 @@
   <app-circle-countdown #circleCountdown [timeElapsed]="timeElapsed" 
     [duration]="getSessionDuration()"></app-circle-countdown>
   <div *ngIf='isSessionActive()'>{{timeElapsed}}</div>
-  <div *ngIf='isSessionActive()'>{{sessionType === 0 ? "Work" : "Break"}}</div>
+  <div *ngIf='isSessionActive()'>{{getSessionTypeName()}}</div>
   <hr>
   <div class="row">
     <button type="button" class="btn btn-success" on-click='onStart()' [disabled]='isSessionActive()'>Start</button>

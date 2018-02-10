@@ -1,7 +1,5 @@
 import { Component, OnInit, OnChanges, ElementRef, ViewChild, Input } from '@angular/core';
 import * as workerTimers from 'worker-timers';
-import { Subscription } from 'rxjs/Subscription';
-import { TimerObservable } from 'rxjs/observable/TimerObservable';
 
 @Component({
   selector: 'app-circle-countdown',
