@@ -21,11 +21,14 @@ export class CircleCountdownComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.radius = 63.6619772368;
     this.initialStrokeDashOffset = 400;
-    this.circleStrokeDashOffset = 400;
+    this.circleStrokeDashOffset = 0;
     this.circleStrokeDashArray = 400;
   }
 
   ngOnChanges() {
+    if (this.duration === 0) {
+      this.circleStrokeDashOffset = 0;
+    }
     if (this.duration !== 0) {
       this.circleStrokeDashOffset = this.initialStrokeDashOffset -
         (this.initialStrokeDashOffset * this.timeElapsed / this.duration);
