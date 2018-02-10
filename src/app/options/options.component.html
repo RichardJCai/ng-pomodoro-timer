@@ -1,8 +1,35 @@
-<div>
-  <h6>Long break duration:</h6>
-  <input type = "text" class="form-control">
-  <h6>Work Intervals Before Long Break:</h6>
-  <input type = "text" class="form-control">
+<form>
+  <div class="row">
+    <div class="col-xs-6">
+      <label for="workDuration">Work Duration</label>
+      <input type="number" class="form-control" id="workDuration" name="workDuration"
+        value='{{workDurationPlaceHolder}}' #workDurationInput>
+      <p>{{workDuration}}</p>
+    </div>
+    <div class = "col-xs-6">
+      <label for="breakDuration">Break Duration</label>
+      <input type="number" class="form-control" id="breakDuration" name="breakDuration"
+        value='{{breakDurationPlaceHolder}}' #breakDurationInput>
+      <p>{{breakDuration}}</p>
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-xs-6">
+        <label for="longBreakDuration">Long Break Duration</label>
+        <input type="number" class="form-control" id="longBreakDuration" value='{{longBreakDurationPlaceHolder}}'
+          name="longBreakDuration" #longBreakDurationInput>
+        <p>{{workDuration}}</p>
+      </div>
+      <div class = "col-xs-6">
+        <label for="breakDuration">Work Sessions Before Long Break</label>
+        <input type="number" class="form-control" id="sessionsUntilLongBreak"
+          value='{{sessionsUntilLongBreakPlaceHolder}}' name="sessionsUntilLongBreak" #sessionsUntilLongBreakInput>
+        <p>{{breakDuration}}</p>
+      </div>
+    </div>
   <h6>Notification Types:</h6>
   <h6>Notification Volume:</h6>
-</div>
+  <button type="submit" class="btn btn-success" 
+    on-click='settingsFormSubmit(workDurationInput.value, breakDurationInput.value, longBreakDurationInput.value,
+    sessionsUntilLongBreakInput.value)'>Submit</button>
+</form>

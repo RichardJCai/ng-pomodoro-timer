@@ -6,7 +6,6 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements OnInit {
-  @Output() optionClicked = new EventEmitter<string>();  // Emitting string as temp data
   @Output() statisticsClicked = new EventEmitter();
 
   constructor() { }
@@ -14,14 +13,7 @@ export class ToolbarComponent implements OnInit {
   ngOnInit() {
   }
 
-  optionEvent() {
-    this.optionClicked.emit('test');
-  }
-
   statisticEvent() {
     this.statisticsClicked.emit();
   }
-
-
-
 }

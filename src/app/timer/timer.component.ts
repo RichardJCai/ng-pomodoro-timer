@@ -21,6 +21,7 @@ export class TimerComponent implements OnInit {
   public sessionsUntilLongBreak: number;
   public workSessionsDone: number;
   public sessionInformation: SessionInformationService;
+  public showOptions: boolean;
   private timeElapsed: number;
   private countDown;
   private sessionPaused: boolean;
@@ -51,7 +52,7 @@ export class TimerComponent implements OnInit {
 
   public onPause() {
     if (this.sessionPaused) {
-      this.startNewSession(this.sessionInformation.sessionDuration);
+      this.resumeSession();
     } else {
       workerTimers.clearInterval(this.countDown);
       this.sessionPaused = true;
@@ -61,6 +62,9 @@ export class TimerComponent implements OnInit {
   public onStop() {
     workerTimers.clearInterval(this.countDown);
     this.sessionActive = false;
+    this.sessionPaused = false;
+    //  this.sessionInformation.end
+    this.sessionInformation.setSessionDuration(0);
     this.timeElapsed = 0;
   }
 
@@ -77,6 +81,22 @@ export class TimerComponent implements OnInit {
     this.sessionInformation.setStartTime(currentTime);
     this.sessionInformation.setSessionDuration(duration);
 
+    this.countDown = workerTimers.setInterval(() => {
+      this._ngZone.run(() => {
+      console.log(this.timeElapsed);
+      if (this.sessionInformation.sessionDuration - this.timeElapsed <= 0) {
+        console.log('session done!');
+        this.timeElapsed = 0;
+        workerTimers.clearInterval(this.countDown);
+        this.sessionDone();
+      }
+      this.timeElapsed++;
+    }); }, 1000);
+  }
+
+  private resumeSession() {
+    this.sessionActive = true;
+    this.sessionPaused = false;
     this.countDown = workerTimers.setInterval(() => {
       this._ngZone.run(() => {
       console.log(this.timeElapsed);
@@ -177,6 +197,25 @@ export class TimerComponent implements OnInit {
       return this.sessionInformation.sessionDuration;
     } else {
       return undefined;
+    }
+  }
+
+  public toggleOptions() {
+    this.showOptions = !this.showOptions;
+  }
+
+  public updateSettings(settings) {
+    if (settings.workDuration) {
+      this.workDuration = settings.workDuration;
+    }
+    if (settings.breakDuration) {
+      this.breakDuration = settings.breakDuration;
+    }
+    if (settings.longBreakDuration) {
+      this.longBreakDuration = settings.longBreakDuration;
+    }
+    if (settings.sessionsUntilLongBreak) {
+      this.sessionsUntilLongBreak = settings.sessionsUntilLongBreak;
     }
   }
 

@@ -1,11 +1,10 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<app-toolbar (optionClicked)='optionClicked()' (statisticsClicked)='statisticsClicked()'></app-toolbar>
+<app-toolbar (statisticsClicked)='statisticsClicked()'></app-toolbar>
 <div style="text-align:center">
   <h1>
     Pomodorooo!
   </h1>
 </div>
 <app-timer></app-timer>
-<app-options *ngIf='showOptions'></app-options>
 <app-statisics *ngIf='showStatistics'></app-statisics>
 <router-outlet></router-outlet>

@@ -6,11 +6,18 @@
   <div *ngIf='isSessionActive()'>{{getSessionTypeName()}}</div>
   <hr>
   <div class="row">
+    <label class="col-xs-6">Work Duration: {{workDuration}}</label>
+    <label class="col-xs-6">Break Duration: {{breakDuration}}</label>
+  </div>
+  <hr>
+  <div class="row">
     <button type="button" class="btn btn-success" on-click='onStart()' [disabled]='isSessionActive()'>Start</button>
     <button class="btn btn-danger" on-click='onStop()' [disabled]='!isSessionActive()'>Stop</button>
-    <button class="btn btn-warning" on-click='onPause()'>Pause</button>
+    <button class="btn btn-warning" on-click='onPause()' [disabled]='!isSessionActive() && !sessionPaused'>Pause</button>
+    <button class="btn btn-success" on-click='toggleOptions()'>Options</button>
   </div>
   <div *ngIf="!isSessionActive()"class='row'>
-    <app-set-duration (breakDurationChange)='setBreakDuration($event)' (workDurationChange)='setWorkDuration($event)'></app-set-duration>
   </div>
+  <hr>  
+  <app-options *ngIf="showOptions" (settingsChange)='updateSettings($event)'></app-options> 
 </div>

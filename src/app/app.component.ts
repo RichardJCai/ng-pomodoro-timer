@@ -8,12 +8,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'app';
 
-  private showOptions = false;
   private showStatistics = false;
-
-  optionClicked() {
-    this.showOptions = !this.showOptions;
-  }
 
   statisticsClicked() {
     this.showStatistics = !this.showStatistics;
