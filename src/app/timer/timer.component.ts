@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter, NgZone } from '@angular/core';
 import { SessionInformationService } from '../session-information.service';
-import { Subscription } from 'rxjs/Subscription';
-import { TimerObservable } from 'rxjs/observable/TimerObservable';
+import * as workerTimers from 'worker-timers';
 
 @Component({
   selector: 'app-timer',
@@ -10,21 +9,17 @@ import { TimerObservable } from 'rxjs/observable/TimerObservable';
 })
 
 export class TimerComponent implements OnInit {
-  @ViewChild('circleCountdown') circleCountdown
-  public sessionType = 0;
+  @ViewChild('circleCountdown') circleCountdown;
+  public sessionType = 0; // 0 for work, 1 for break
   public workDuration: number;
   public breakDuration: number;
   public sessionInformation: SessionInformationService;
-
-  private tick: number;
+  private timeElapsed;
+  private countDown;
   private sessionPaused: boolean;
   private sessionActive: boolean;
-  private timeElapsed = 0;
-  private timeRemaining = 0;
-  private subscription: Subscription;
 
-
-  constructor() {
+  constructor(private _ngZone: NgZone) {
     // Load from db if user is logged in
   }
 
@@ -37,21 +32,17 @@ export class TimerComponent implements OnInit {
 
   onPause() {
     if (this.sessionPaused) {
-      this.timeRemaining = this.sessionInformation.sessionDuration - this.timeElapsed;
-      this.startNewSession(this.timeRemaining, this.sessionType);
-      this.circleCountdown.onResume(this.sessionInformation.sessionDuration)
+      this.startNewSession(this.sessionInformation.sessionDuration, this.sessionType);
     } else {
-      this.subscription.unsubscribe();
+      workerTimers.clearInterval(this.countDown);
       this.sessionPaused = true;
-      this.circleCountdown.onPause()
     }
   }
 
   onStop() {
-    this.subscription.unsubscribe();
+    workerTimers.clearInterval(this.countDown);
     this.sessionActive = false;
     this.timeElapsed = 0;
-    this.circleCountdown.onStop()
   }
 
   private startNewSession(duration, sessionType) {
@@ -63,21 +54,17 @@ export class TimerComponent implements OnInit {
     const currentTime = new Date();
     this.sessionInformation.setStartTime(currentTime);
     this.sessionInformation.setSessionDuration(duration);
-    this.circleCountdown.countdown(duration, true);
-    const timer = TimerObservable.create(0, 1000);
-    this.subscription = timer.subscribe( t => {
-      this.timeElapsed = t;
+    this.countDown = workerTimers.setInterval(() => {
+      this._ngZone.run(() => {
+      console.log(this.timeElapsed);
       if (this.sessionInformation.sessionDuration - this.timeElapsed <= 0) {
         console.log('session done!');
-        this.subscription.unsubscribe();
+        this.timeElapsed = 0;
+        workerTimers.clearInterval(this.countDown);
         this.sessionDone();
       }
-    });
-    console.log('hi');
-  }
-
-  updateTime(duration) {
-    this.timeRemaining = this.timeRemaining - 1;
+      this.timeElapsed++;
+    }); }, 1000);
   }
 
   sessionDone() {
@@ -93,7 +80,6 @@ export class TimerComponent implements OnInit {
     });
 
     this.sessionType = this.sessionType === 0 ? 1 : 0;
-    // confirm('press a button to start next session');
     if (this.sessionType === 0) {
       this.startNewSession(this.workDuration, 0);
     } else {
@@ -117,8 +103,16 @@ export class TimerComponent implements OnInit {
     return this.timeElapsed;
   }
 
+  testGetTimeElapsed() {
+    console.log(this.timeElapsed);
+  }
+
   getSessionDuration() {
-    return this.sessionInformation.sessionDuration;
+    if (this.sessionInformation) {
+      return this.sessionInformation.sessionDuration;
+    } else {
+      return undefined;
+    }
   }
 
 }

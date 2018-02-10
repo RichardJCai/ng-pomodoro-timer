@@ -1,69 +1,36 @@
-import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, ElementRef, ViewChild, Input } from '@angular/core';
+import * as workerTimers from 'worker-timers';
+import { Subscription } from 'rxjs/Subscription';
+import { TimerObservable } from 'rxjs/observable/TimerObservable';
 
 @Component({
   selector: 'app-circle-countdown',
   templateUrl: './circle-countdown.component.html',
   styleUrls: ['./circle-countdown.component.css']
 })
-export class CircleCountdownComponent implements OnInit {
+export class CircleCountdownComponent implements OnInit, OnChanges {
   @ViewChild('circle') circleEl: ElementRef;
-  constructor() { }
-  public radius: number
-  public circleStrokeDashOffset: number
-  public circleStrokeDashArray: number
-  public initialStrokeDashOffset: number
-  public duration: number
-  public elapsedTime: number
-  public countDown
-  
+  @Input() timeElapsed: number;
+  @Input() duration: number;
+  public radius: number;
+  public circleStrokeDashOffset: number;
+  public circleStrokeDashArray: number;
+  public initialStrokeDashOffset: number;
+  public countDown;
+
+  constructor() {}
 
   ngOnInit() {
-    this.radius = 63.6619772368
-    this.initialStrokeDashOffset = 400
-    this.circleStrokeDashOffset = 400
-    this.circleStrokeDashArray = 400
+    this.radius = 63.6619772368;
+    this.initialStrokeDashOffset = 400;
+    this.circleStrokeDashOffset = 400;
+    this.circleStrokeDashArray = 400;
   }
 
-  public countdown(duration: number, reset: boolean) {
-    let currentDuration
-    if (reset) {
-      this.circleStrokeDashOffset = this.initialStrokeDashOffset
-      this.elapsedTime
-      currentDuration = duration
-      this.duration = duration
-    } else {
-      currentDuration = duration - this.elapsedTime
+  ngOnChanges() {
+    if (this.duration !== 0) {
+      this.circleStrokeDashOffset = this.initialStrokeDashOffset -
+        (this.initialStrokeDashOffset * this.timeElapsed / this.duration);
     }
-
-    // Tick once
-    this.circleStrokeDashOffset -= (this.initialStrokeDashOffset / this.duration)
-
-    this.countDown = setInterval(() => {
-      this.circleStrokeDashOffset -= (this.initialStrokeDashOffset / this.duration)
-      if (this.circleStrokeDashOffset < 0) {
-        this.circleStrokeDashOffset = 0
-      }
-      this.elapsedTime++
-      if (currentDuration <= 1 || this.circleStrokeDashOffset <= 0) {
-        clearInterval(this.countDown)
-      }
-      currentDuration--
-    }, 1000)
-    console.log(this.circleStrokeDashOffset)
   }
-
-  public onPause() {
-    clearInterval(this.countDown)
-    alert(this.circleStrokeDashOffset)
-  }
-
-  public onResume(duration: number) {
-    this.countdown(duration, false)
-  }
-
-  public onStop() {
-    clearInterval(this.countDown)
-    this.circleStrokeDashOffset = this.initialStrokeDashOffset
-  }
-
 }

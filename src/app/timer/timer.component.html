@@ -1,7 +1,8 @@
 
 <div class = "col" id="main">
-  <app-circle-countdown #circleCountdown></app-circle-countdown>
-  <div *ngIf='isSessionActive()'>{{getSessionDuration() - getTimeElapsed()}}</div>
+  <app-circle-countdown #circleCountdown [timeElapsed]="timeElapsed" 
+    [duration]="getSessionDuration()"></app-circle-countdown>
+  <div *ngIf='isSessionActive()'>{{timeElapsed}}</div>
   <div *ngIf='isSessionActive()'>{{sessionType === 0 ? "Work" : "Break"}}</div>
   <hr>
   <div class="row">
@@ -9,9 +10,7 @@
     <button class="btn btn-danger" on-click='onStop()' [disabled]='!isSessionActive()'>Stop</button>
     <button class="btn btn-warning" on-click='onPause()'>Pause</button>
   </div>
-
   <div *ngIf="!isSessionActive()"class='row'>
-    <!--Add gear to toggle settings-->
     <app-set-duration (breakDurationChange)='setBreakDuration($event)' (workDurationChange)='setWorkDuration($event)'></app-set-duration>
   </div>
 </div>
