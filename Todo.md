@@ -9,8 +9,12 @@
   * ~Long breaks~
   * Notification types
   * Add task name
-* Local Storage / Firebase db
+* ~Local Storage~ / Firebase db
 * Background image
 * Add gear to show and hide settings
 * Keyboard shortcuts
 * Make into PWA using Ionic
+
+
+## Bugs
+* can't click options when screen minimized in certain way (like when dev tools are open)
