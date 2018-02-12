@@ -7,10 +7,10 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 })
 export class OptionsComponent implements OnInit {
   @Output() settingsChange = new EventEmitter<Object>();
-  @Input() workDurationPlaceHolder = 1500;
-  @Input() breakDurationPlaceHolder = 300;
-  @Input() longBreakDurationPlaceHolder = 900;
-  @Input() sessionsUntilLongBreakPlaceHolder = 4;
+  @Input() workDurationPlaceHolder;
+  @Input() breakDurationPlaceHolder;
+  @Input() longBreakDurationPlaceHolder;
+  @Input() sessionsUntilLongBreakPlaceHolder;
 
   constructor() { }
 

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter, NgZone } from '@angular/core';
 import { SessionInformationService } from '../session-information.service';
 import * as workerTimers from 'worker-timers';
+import * as idb from 'idb-keyval';
 
 const workSession = 0;
 const breakSession = 1;
@@ -30,17 +31,21 @@ export class TimerComponent implements OnInit {
   constructor(private _ngZone: NgZone) {
     // Load from db if user is logged in
     // Load work sessions done
-
     // if (storage) {
-    if (false) {
-      // load from storage
-    } else { // load default settings
-      this.workDuration = 1500;
-      this.breakDuration = 300;
-      this.longBreakDuration = 900;
-      this.sessionsUntilLongBreak = 4;
-      this.workSessionsDone = 0;
-    }
+    idb.get('work-duration').then(val => {
+      this.workDuration = val ? Number(val) : 1500;
+    });
+    idb.get('break-duration').then(val => {
+      this.breakDuration = val ? Number(val) : 300;
+    });
+    idb.get('long-break-duration').then(val => {
+      this.longBreakDuration = val ? Number(val) : 900;
+    });
+    idb.get('sessions-until-long-break').then(val => {
+      this.sessionsUntilLongBreak = val ? Number(val) : 4;
+    });
+
+    this.workSessionsDone = 0;
   }
 
   ngOnInit() {
@@ -170,14 +175,6 @@ export class TimerComponent implements OnInit {
     return this.sessionActive;
   }
 
-  public setWorkDuration(duration) {
-    this.workDuration = duration;
-  }
-
-  public setBreakDuration(duration) {
-    this.breakDuration = duration;
-  }
-
   public getTimeElapsed() {
     return this.timeElapsed;
   }
@@ -206,15 +203,19 @@ export class TimerComponent implements OnInit {
 
   public updateSettings(settings) {
     if (settings.workDuration) {
+      idb.set('work-duration', settings.workDuration);
       this.workDuration = settings.workDuration;
     }
     if (settings.breakDuration) {
+      idb.set('break-duration', settings.breakDuration);
       this.breakDuration = settings.breakDuration;
     }
     if (settings.longBreakDuration) {
+      idb.set('long-break-duration', settings.longBreakDuration);
       this.longBreakDuration = settings.longBreakDuration;
     }
     if (settings.sessionsUntilLongBreak) {
+      idb.set('sessions-until-long-break', settings.sessionsUntilLongBreak);
       this.sessionsUntilLongBreak = settings.sessionsUntilLongBreak;
     }
   }

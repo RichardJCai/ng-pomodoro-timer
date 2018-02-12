@@ -19,5 +19,8 @@
   <div *ngIf="!isSessionActive()"class='row'>
   </div>
   <hr>  
-  <app-options *ngIf="showOptions" (settingsChange)='updateSettings($event)'></app-options> 
+  <app-options *ngIf="showOptions" (settingsChange)='updateSettings($event)'
+  [workDurationPlaceHolder]="workDuration" [breakDurationPlaceHolder]="breakDuration"
+  [sessionsUntilLongBreakPlaceHolder]="sessionsUntilLongBreak"
+  [longBreakDurationPlaceHolder]="longBreakDuration"></app-options> 
 </div>
