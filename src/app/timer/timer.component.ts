@@ -27,6 +27,7 @@ export class TimerComponent implements OnInit {
   private countDown;
   private sessionPaused: boolean;
   private sessionActive: boolean;
+  private audio;
 
   constructor(private _ngZone: NgZone) {
     // Load from db if user is logged in
@@ -49,6 +50,8 @@ export class TimerComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.audio = new Audio();
+    this.audio.src = '../assets/sounds/alarm/analog-alarm.wav';
   }
 
   public onStart() {
@@ -116,13 +119,11 @@ export class TimerComponent implements OnInit {
   }
 
   private sessionDone() {
-    const audio = new Audio();
-    audio.src = '../assets/sounds/alarm/analog-alarm.wav';
-    audio.play();
     const notificationMsg = this.getSessionCompleteMsg();
     Notification.requestPermission(permission => {
       if (permission === 'granted') {
         const notification = new Notification(notificationMsg);
+        this.audio.play();
       }
     });
 
@@ -218,6 +219,23 @@ export class TimerComponent implements OnInit {
       idb.set('sessions-until-long-break', settings.sessionsUntilLongBreak);
       this.sessionsUntilLongBreak = settings.sessionsUntilLongBreak;
     }
+  }
+
+  public getRemainingTime() {
+    const durationInSeconds = this.getSessionDuration() - this.timeElapsed;
+    if (!durationInSeconds) {
+      return '0:00'
+    }
+    
+    return this.formatTime(durationInSeconds)
+  }
+
+  // format seconds to mm:ss
+  private formatTime(seconds: number) {
+    const minutes = Math.floor(seconds / 60);
+    seconds = seconds - 60 * minutes;
+    
+    return seconds < 10 ? `${minutes}:0${seconds}` : `${minutes}:${seconds}`;
   }
 
 }

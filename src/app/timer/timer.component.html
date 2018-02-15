@@ -2,12 +2,11 @@
 <div class = "col" id="main">
   <app-circle-countdown #circleCountdown [timeElapsed]="timeElapsed" 
     [duration]="getSessionDuration()"></app-circle-countdown>
-  <div *ngIf='isSessionActive()'>{{timeElapsed}}</div>
-  <div *ngIf='isSessionActive()'>{{getSessionTypeName()}}</div>
+  <div class="display-information">{{getRemainingTime()}}</div>
   <hr>
   <div class="row">
-    <label class="col-xs-6">Work Duration: {{workDuration}}</label>
-    <label class="col-xs-6">Break Duration: {{breakDuration}}</label>
+    <label class="col-xs-6">Work Duration: {{formatTime(workDuration)}}</label>
+    <label class="col-xs-6">Break Duration: {{formatTime(breakDuration)}}</label>
   </div>
   <hr>
   <div class="row">
