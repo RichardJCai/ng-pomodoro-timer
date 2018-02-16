@@ -2,6 +2,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule} from '@angular/forms';
 
+// Material Angular
+import { MatSliderModule } from '@angular/material/slider';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TimerComponent } from './timer/timer.component';
@@ -24,7 +28,9 @@ import { CircleCountdownComponent } from './circle-countdown/circle-countdown.co
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    MatSliderModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
