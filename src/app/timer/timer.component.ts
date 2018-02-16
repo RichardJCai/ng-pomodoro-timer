@@ -3,9 +3,9 @@ import { SessionInformationService } from '../session-information.service';
 import * as workerTimers from 'worker-timers';
 import * as idb from 'idb-keyval';
 
-const workSession = 0;
-const breakSession = 1;
-const longBreakSession = 2;
+const WORKSESSION = 0;
+const BREAKSESSION = 1;
+const LONGBREAKSESSION = 2;
 
 @Component({
   selector: 'app-timer',
@@ -15,7 +15,7 @@ const longBreakSession = 2;
 
 export class TimerComponent implements OnInit {
   @ViewChild('circleCountdown') circleCountdown;
-  public sessionType = workSession;
+  public sessionType = WORKSESSION;
   public workDuration: number;
   public breakDuration: number;
   public longBreakDuration: number;
@@ -30,6 +30,9 @@ export class TimerComponent implements OnInit {
   private audio;
 
   constructor(private _ngZone: NgZone) {
+  }
+
+  ngOnInit() {
     // Load from db if user is logged in
     // Load work sessions done
     // if (storage) {
@@ -47,9 +50,6 @@ export class TimerComponent implements OnInit {
     });
 
     this.workSessionsDone = 0;
-  }
-
-  ngOnInit() {
     this.audio = new Audio();
     this.audio.src = '../assets/sounds/alarm/analog-alarm.wav';
   }
@@ -127,18 +127,18 @@ export class TimerComponent implements OnInit {
       }
     });
 
-    if (this.sessionType === workSession) {
+    if (this.sessionType === WORKSESSION) {
       this.workSessionsDone++;
     }
 
     // Determine session type and start new session.
     this.determineSessionType();
     let sessionDuration;
-    if (this.sessionType === workSession) {
+    if (this.sessionType === WORKSESSION) {
       sessionDuration = this.workDuration;
-    } else if (this.sessionType === breakSession) {
+    } else if (this.sessionType === BREAKSESSION) {
       sessionDuration = this.breakDuration;
-    } else if (this.sessionType === longBreakSession) {
+    } else if (this.sessionType === LONGBREAKSESSION) {
       sessionDuration = this.longBreakDuration;
     }
 
@@ -160,15 +160,15 @@ export class TimerComponent implements OnInit {
   }
 
   private determineSessionType(): void {
-    if (this.sessionType === workSession) {
+    if (this.sessionType === WORKSESSION) {
       if (this.workSessionsDone >= this.sessionsUntilLongBreak) {
-        this.sessionType = longBreakSession;
+        this.sessionType = LONGBREAKSESSION;
         this.workSessionsDone = 0;
       } else {
-          this.sessionType = breakSession;
+          this.sessionType = BREAKSESSION;
       }
-    } else if (this.sessionType === breakSession || this.sessionType === longBreakSession) {
-        this.sessionType = workSession;
+    } else if (this.sessionType === BREAKSESSION || this.sessionType === LONGBREAKSESSION) {
+        this.sessionType = WORKSESSION;
     }
   }
 
@@ -223,15 +223,24 @@ export class TimerComponent implements OnInit {
 
   public getRemainingTime() {
     const durationInSeconds = this.getSessionDuration() - this.timeElapsed;
-    if (!durationInSeconds) {
-      return '0:00'
+    if (!this.sessionActive) {
+      if (this.sessionType === WORKSESSION) {
+        return this.formatTime(this.workDuration);
+      } else if (this.sessionType === BREAKSESSION) {
+        return this.formatTime(this.breakDuration);
+      } else if (this.sessionType === LONGBREAKSESSION) {
+        return this.formatTime(this.longBreakDuration);
+      } 
     }
-    
-    return this.formatTime(durationInSeconds)
+
+    return this.formatTime(durationInSeconds);
   }
 
   // format seconds to mm:ss
   private formatTime(seconds: number) {
+    if (!seconds) {
+      return '0:00'
+    }
     const minutes = Math.floor(seconds / 60);
     seconds = seconds - 60 * minutes;
     
