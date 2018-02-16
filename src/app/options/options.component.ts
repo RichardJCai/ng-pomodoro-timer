@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import 'hammerjs'
 
 @Component({
   selector: 'app-options',
@@ -11,6 +12,8 @@ export class OptionsComponent implements OnInit {
   @Input() breakDurationPlaceHolder;
   @Input() longBreakDurationPlaceHolder;
   @Input() sessionsUntilLongBreakPlaceHolder;
+  public soundNotifications: boolean;
+  public floatNotifications: boolean;
 
   constructor() { }
 
