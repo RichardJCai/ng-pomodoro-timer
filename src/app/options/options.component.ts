@@ -15,7 +15,7 @@ export class OptionsComponent implements OnInit {
   public soundNotifications: boolean;
   public floatNotifications: boolean;
 
-  constructor() { }
+  public readonly timeValues = [300, 600, 900, 1500, 1800, 2700, 3600] // Time in seconds
 
   ngOnInit() {
   }
