@@ -29,6 +29,8 @@ export class TimerComponent implements OnInit {
   public workSessionsDone: number;
   public sessionInformation: SessionInformationService;
   public showOptions: boolean;
+  public showContinue: boolean;
+
   private timeElapsed: number;
   private countDown;
   private sessionPaused: boolean;
@@ -95,6 +97,7 @@ export class TimerComponent implements OnInit {
     this.timeElapsed = 0;
     this.sessionActive = true;
     this.sessionPaused = false;
+    this.showContinue = false;
     const currentTime = new Date();
 
     this.sessionInformation = new SessionInformationService();
@@ -149,7 +152,7 @@ export class TimerComponent implements OnInit {
       sessionDuration = this.longBreakDuration;
     }
 
-    this.startNewSession(sessionDuration);
+    this.showContinue = true;
   }
 
   private getSessionCompleteMsg(): string {

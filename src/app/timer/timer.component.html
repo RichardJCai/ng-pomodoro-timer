@@ -10,9 +10,9 @@
   </div>
   <hr>
   <div class="row">
-    <button type="button" class="btn btn-success" on-click='onStart()' [disabled]='isSessionActive()'>Start</button>
+    <button type="button" class="btn btn-success" on-click='onStart()' [disabled]='isSessionActive() && !showContinue'>{{showContinue? "Continue" : "Start"}}</button>
     <button class="btn btn-danger" on-click='onStop()' [disabled]='!isSessionActive()'>Stop</button>
-    <button class="btn btn-warning" on-click='onPause()' [disabled]='!isSessionActive() && !sessionPaused'>Pause</button>
+    <button class="btn btn-warning" on-click='onPause()' [disabled]='!isSessionActive() && !sessionPaused'>{{sessionPaused ? "Unpause" : "Pause"}}</button>
     <button class="btn btn-success" on-click='toggleOptions()'>Options</button>
   </div>
   <div *ngIf="!isSessionActive()"class='row'>
