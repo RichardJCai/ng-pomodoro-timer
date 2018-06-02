@@ -8,27 +8,29 @@ import 'hammerjs'
 })
 export class OptionsComponent implements OnInit {
   @Output() settingsChange = new EventEmitter<Object>();
-  @Input() workDurationPlaceHolder;
-  @Input() breakDurationPlaceHolder;
-  @Input() longBreakDurationPlaceHolder;
-  @Input() sessionsUntilLongBreakPlaceHolder;
-  public soundNotifications: boolean;
-  public floatNotifications: boolean;
+  @Input() workDuration: number;
+  @Input() breakDuration: number;
+  @Input() longBreakDuration: number;
+  @Input() sessionsUntilLongBreak: number;
+  @Input() soundNotifications: boolean;
+  @Input() floatNotifications: boolean;
+  @Input() volume: number;
 
   public readonly timeValues = [300, 600, 900, 1500, 1800, 2700, 3600] // Time in seconds
 
   ngOnInit() {
   }
 
-  public settingsFormSubmit(workDuration: number, breakDuration: number, longBreakDuration: number,
-    sessionsUntilLongBreak: number) {
-      const settingsConfig = {
-        workDuration: workDuration,
-        breakDuration: breakDuration,
-        longBreakDuration: longBreakDuration,
-        sessionsUntilLongBreak: sessionsUntilLongBreak
-      };
-      this.settingsChange.emit(settingsConfig);
-  }
-
+  public saveSettings() {
+    const settingsConfig = {
+      workDuration: this.workDuration,
+      breakDuration: this.breakDuration,
+      longBreakDuration: this.longBreakDuration,
+      sessionsUntilLongBreak: this.sessionsUntilLongBreak,
+      soundNotifications: this.soundNotifications,
+      floatNotifications: this.floatNotifications,
+      volume: this.volume
+    };
+    this.settingsChange.emit(settingsConfig);
+}
 }

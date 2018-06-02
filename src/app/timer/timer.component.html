@@ -5,8 +5,8 @@
   <div class="display-information">{{getRemainingTime()}}</div>
   <hr>
   <div class="row">
-    <label class="col-xs-6">Work Duration: {{formatTime(workDuration)}}</label>
-    <label class="col-xs-6">Break Duration: {{formatTime(breakDuration)}}</label>
+    <label class="col-6">Work Duration: {{formatTime(workDuration)}}</label>
+    <label class="col-6">Break Duration: {{formatTime(breakDuration)}}</label>
   </div>
   <hr>
   <div class="row">
@@ -19,7 +19,7 @@
   </div>
   <hr>  
   <app-options *ngIf="showOptions" (settingsChange)='updateSettings($event)'
-  [workDurationPlaceHolder]="workDuration" [breakDurationPlaceHolder]="breakDuration"
-  [sessionsUntilLongBreakPlaceHolder]="sessionsUntilLongBreak"
-  [longBreakDurationPlaceHolder]="longBreakDuration"></app-options> 
+  [workDuration]="workDuration" [breakDuration]="breakDuration"
+  [sessionsUntilLongBreak]="sessionsUntilLongBreak"
+  [longBreakDuration]="longBreakDuration"></app-options> 
 </div>
