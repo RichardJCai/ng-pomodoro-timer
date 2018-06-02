@@ -8,30 +8,26 @@ import 'hammerjs'
 })
 export class OptionsComponent implements OnInit {
   @Output() settingsChange = new EventEmitter<Object>();
-  @Input() workDuration: number;
-  @Input() breakDuration: number;
-  @Input() longBreakDuration: number;
-  @Input() sessionsUntilLongBreak: number;
-  @Input() soundNotifications: boolean;
-  @Input() floatNotifications: boolean;
-  @Input() volume: number;
+  @Input() workDurationPlaceHolder;
+  @Input() breakDurationPlaceHolder;
+  @Input() longBreakDurationPlaceHolder;
+  @Input() sessionsUntilLongBreakPlaceHolder;
+  public soundNotifications: boolean;
+  public floatNotifications: boolean;
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  public settingsFormSubmit() {
+  public settingsFormSubmit(workDuration: number, breakDuration: number, longBreakDuration: number,
+    sessionsUntilLongBreak: number) {
       const settingsConfig = {
-        workDuration: this.workDuration,
-        breakDuration: this.breakDuration,
-        longBreakDuration: this.longBreakDuration,
-        sessionsUntilLongBreak: this.sessionsUntilLongBreak,
-        soundNotifications: this.soundNotifications,
-        floatNotifications: this.floatNotifications,
-        volume: this.volume
+        workDuration: workDuration,
+        breakDuration: breakDuration,
+        longBreakDuration: longBreakDuration,
+        sessionsUntilLongBreak: sessionsUntilLongBreak
       };
-      console.log(settingsConfig)
       this.settingsChange.emit(settingsConfig);
   }
 
