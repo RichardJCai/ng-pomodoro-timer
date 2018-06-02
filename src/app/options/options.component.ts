@@ -16,7 +16,7 @@ export class OptionsComponent implements OnInit {
   @Input() floatNotifications: boolean;
   @Input() volume: number;
 
-  constructor() { }
+  public readonly timeValues = [300, 600, 900, 1500, 1800, 2700, 3600] // Time in seconds
 
   ngOnInit() {
   }

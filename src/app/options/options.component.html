@@ -1,42 +1,43 @@
-<form>
-  <div class="row">
-    <div class="col-6">
-      <label for="workDuration">Work Duration</label>
-      <input type="number" class="form-control" id="workDuration" name="work-duration"
-        [(ngModel)]="workDuration" #workDurationInput>
-    </div>
-    <div class = "col-6">
-      <label for="breakDuration">Break Duration</label>
-      <input type="number" class="form-control" id="breakDuration" name="break-duration"
-        [(ngModel)]="breakDuration" #breakDurationInput>
-    </div>
+<div class="row">
+  <div class="col-6">
+    <label for="workDuration">Work Duration</label>
+    <select class="time-dropdown" [(ngModel)]="workDuration">
+        <option *ngFor="let time of timeValues" [ngValue]="time">{{time / 60}}:00</option>
+    </select>
   </div>
-  <div class="row">
-    <div class="col-6">
-      <label for="longBreakDuration">Long Break Duration</label>
-      <input type="number" class="form-control" id="longBreakDuration" name="long-break-duration"
-        [(ngModel)]="longBreakDuration" #longBreakDurationInput>
-    </div>
-    <div class = "col-6">
-      <label for="breakDuration">Work Sessions Before Long Break</label>
-      <input type="number" class="form-control" id="sessionsUntilLongBreak"
-        [(ngModel)]="sessionsUntilLongBreak" name="sessions-until-long-break" #sessionsUntilLongBreakInput>
-    </div>
+  <div class = "col-6">
+    <label for="breakDuration">Break Duration</label>
+      <select class="time-dropdown" [(ngModel)]="breakDuration">
+          <option *ngFor="let time of timeValues" [ngValue]="time">{{time / 60}}:00</option>
+      </select>
   </div>
-  <div class="notification-type-container">
-    <div>
-      <input type="checkbox" name="sound" [(ngModel)]="soundNotifications">
-      <label>Sound Notifications</label>
-    </div>
-    <div>
-      <input type="checkbox" name="float" [(ngModel)]="floatNotifications">
-      <label>Float Notifications</label>
-    </div>
+</div>
+<div class="row">
+  <div class="col-6">
+    <label for="longBreakDuration">Long Break Duration</label>
+    <select class="time-dropdown" [(ngModel)]="longBreakDuration">
+        <option *ngFor="let time of timeValues" [ngValue]="time">{{time / 60}}:00</option>
+    </select>
+  </div>
+  <div class = "col-6">
+    <label for="breakDuration">Work Sessions Before Long Break</label>
+    <input type="number" class="form-control" id="sessionsUntilLongBreak"
+      [(ngModel)]="sessionsUntilLongBreak" name="sessions-until-long-break" #sessionsUntilLongBreakInput>
+  </div>
+</div>
+<div class="notification-type-container">
+  <div>
+    <input type="checkbox" name="sound" [(ngModel)]="soundNotifications">
+    <label>Sound Notifications</label>
   </div>
   <div>
-    <label>Notification Volume:</label>
-    <mat-slider min="0" max="100" step="1" name="volume" [(ngModel)]="volume"></mat-slider>
+    <input type="checkbox" name="float" [(ngModel)]="floatNotifications">
+    <label>Float Notifications</label>
   </div>
-  <button type="submit" class="btn btn-success" 
-    on-click='settingsFormSubmit()'>Submit</button>
-</form>
+</div>
+<div>
+  <label>Notification Volume:</label>
+  <mat-slider min="0" max="100" step="1" name="volume" [(ngModel)]="volume"></mat-slider>
+</div>
+<button type="submit" class="btn btn-success" 
+  on-click='settingsFormSubmit()'>Submit</button>
