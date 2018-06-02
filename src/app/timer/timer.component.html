@@ -1,15 +1,16 @@
+
 <div class = "col" id="main">
   <app-circle-countdown #circleCountdown [timeElapsed]="timeElapsed" 
     [duration]="getSessionDuration()"></app-circle-countdown>
   <div class="display-information">{{getRemainingTime()}}</div>
   <hr>
   <div class="row">
-    <label class="col-6">Work Duration: {{formatTime(workDuration)}}</label>
-    <label class="col-6">Break Duration: {{formatTime(breakDuration)}}</label>
+    <label class="col-xs-6">Work Duration: {{formatTime(workDuration)}}</label>
+    <label class="col-xs-6">Break Duration: {{formatTime(breakDuration)}}</label>
   </div>
   <hr>
   <div class="row">
-    <button type="btn" class="btn btn-success" on-click='onStart()' [disabled]='isSessionActive()'>Start</button>
+    <button type="button" class="btn btn-success" on-click='onStart()' [disabled]='isSessionActive()'>Start</button>
     <button class="btn btn-danger" on-click='onStop()' [disabled]='!isSessionActive()'>Stop</button>
     <button class="btn btn-warning" on-click='onPause()' [disabled]='!isSessionActive() && !sessionPaused'>Pause</button>
     <button class="btn btn-success" on-click='toggleOptions()'>Options</button>
@@ -17,8 +18,8 @@
   <div *ngIf="!isSessionActive()"class='row'>
   </div>
   <hr>  
-  <app-options #options *ngIf="showOptions" (settingsChange)='updateSettings($event)'
-  [workDuration]="workDuration" [breakDuration]="breakDuration"
-  [sessionsUntilLongBreak]="sessionsUntilLongBreak" [longBreakDuration]="longBreakDuration"
-  [volume]="volume" [soundNotifications]="soundNotifications" [floatNotifications]="floatNotifications"></app-options> 
+  <app-options *ngIf="showOptions" (settingsChange)='updateSettings($event)'
+  [workDurationPlaceHolder]="workDuration" [breakDurationPlaceHolder]="breakDuration"
+  [sessionsUntilLongBreakPlaceHolder]="sessionsUntilLongBreak"
+  [longBreakDurationPlaceHolder]="longBreakDuration"></app-options> 
 </div>
