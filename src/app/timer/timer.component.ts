@@ -16,10 +16,16 @@ const LONGBREAKSESSION = 2;
 export class TimerComponent implements OnInit {
   @ViewChild('circleCountdown') circleCountdown;
   public sessionType = WORKSESSION;
+  
+  // Options
   public workDuration: number;
   public breakDuration: number;
   public longBreakDuration: number;
   public sessionsUntilLongBreak: number;
+  public soundNotifications: boolean;
+  public floatNotifications: boolean;
+  public volume: number;
+
   public workSessionsDone: number;
   public sessionInformation: SessionInformationService;
   public showOptions: boolean;
@@ -35,7 +41,6 @@ export class TimerComponent implements OnInit {
   ngOnInit() {
     // Load from db if user is logged in
     // Load work sessions done
-    // if (storage) {
     idb.get('work-duration').then(val => {
       this.workDuration = val ? Number(val) : 1500;
     });
@@ -48,6 +53,15 @@ export class TimerComponent implements OnInit {
     idb.get('sessions-until-long-break').then(val => {
       this.sessionsUntilLongBreak = val ? Number(val) : 4;
     });
+    idb.get('sound-notifications').then(val => {
+      this.soundNotifications = val ? true : false;
+    })
+    idb.get('float-notifications').then(val => {
+      this.floatNotifications = val ? true : false;
+    })  
+    idb.get('volume').then(val => {
+      this.volume = val ? Number(val) : 50;
+    })
 
     this.workSessionsDone = 0;
     this.audio = new Audio();
@@ -119,14 +133,7 @@ export class TimerComponent implements OnInit {
   }
 
   private sessionDone() {
-    const notificationMsg = this.getSessionCompleteMsg();
-    Notification.requestPermission(permission => {
-      if (permission === 'granted') {
-        const notification = new Notification(notificationMsg);
-        this.audio.play();
-      }
-    });
-
+    this.displayNotifications()
     if (this.sessionType === WORKSESSION) {
       this.workSessionsDone++;
     }
@@ -219,6 +226,18 @@ export class TimerComponent implements OnInit {
       idb.set('sessions-until-long-break', settings.sessionsUntilLongBreak);
       this.sessionsUntilLongBreak = settings.sessionsUntilLongBreak;
     }
+    if (settings.soundNotifications !== undefined) {
+      idb.set('sound-notifications', settings.soundNotifications);
+      this.soundNotifications = settings.soundNotifications;
+    }
+    if (settings.floatNotifications !== undefined) {
+      idb.set('float-notifications', settings.floatNotifications);
+      this.floatNotifications = settings.floatNotifications;
+    }
+    if (settings.volume) {
+      idb.set('volume', settings.volume);
+      this.volume = settings.volume;
+    }
   }
 
   public getRemainingTime() {
@@ -245,6 +264,21 @@ export class TimerComponent implements OnInit {
     seconds = seconds - 60 * minutes;
     
     return seconds < 10 ? `${minutes}:0${seconds}` : `${minutes}:${seconds}`;
+  }
+
+  private displayNotifications() {
+    const notificationMsg = this.getSessionCompleteMsg();
+    if (this.soundNotifications) {
+      this.audio.volume = this.volume / 100;
+      this.audio.play();
+    }
+    if (this.floatNotifications) {
+      Notification.requestPermission(permission => {
+        if (permission === 'granted') {
+          const notification = new Notification(notificationMsg);
+        }
+      });
+    }
   }
 
 }
