@@ -106,33 +106,13 @@ export class TimerComponent implements OnInit {
     this.sessionInformation.setStartTime(currentTime);
     this.sessionInformation.setSessionDuration(duration);
 
-    this.countDown = workerTimers.setInterval(() => {
-      this._ngZone.run(() => {
-      console.log(this.timeElapsed);
-      if (this.sessionInformation.sessionDuration - this.timeElapsed <= 0) {
-        console.log('session done!');
-        this.timeElapsed = 0;
-        workerTimers.clearInterval(this.countDown);
-        this.sessionDone();
-      }
-      this.timeElapsed++;
-    }); }, 1000);
+    this.countDown = workerTimers.setInterval(this.startCountDown, 1000)
   }
 
   private resumeSession() {
     this.sessionActive = true;
     this.sessionPaused = false;
-    this.countDown = workerTimers.setInterval(() => {
-      this._ngZone.run(() => {
-      console.log(this.timeElapsed);
-      if (this.sessionInformation.sessionDuration - this.timeElapsed <= 0) {
-        console.log('session done!');
-        this.timeElapsed = 0;
-        workerTimers.clearInterval(this.countDown);
-        this.sessionDone();
-      }
-      this.timeElapsed++;
-    }); }, 1000);
+    this.countDown = workerTimers.setInterval(this.startCountDown, 1000)
   }
 
   private sessionDone() {
@@ -151,7 +131,6 @@ export class TimerComponent implements OnInit {
     } else if (this.sessionType === LONGBREAKSESSION) {
       sessionDuration = this.longBreakDuration;
     }
-
     this.showContinue = true;
   }
 
@@ -257,6 +236,28 @@ export class TimerComponent implements OnInit {
 
     return this.formatTime(durationInSeconds);
   }
+
+  public getSessionTypeString() {
+    if (this.sessionType === WORKSESSION) {
+      return 'Work'
+    }
+    else if (this.sessionType === BREAKSESSION) {
+      return 'Break'
+    }
+    else if (this.sessionType === LONGBREAKSESSION) {
+      return 'Long Break'
+    }
+  }
+
+  private startCountDown = () => {
+    this._ngZone.run(() => {
+      this.timeElapsed++;
+      if (this.sessionInformation.sessionDuration - this.timeElapsed <= 0) {
+        console.log('session done!');
+        workerTimers.clearInterval(this.countDown);
+        this.sessionDone();
+      }
+  })}
 
   // format seconds to mm:ss
   private formatTime(seconds: number) {

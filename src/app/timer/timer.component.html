@@ -3,6 +3,7 @@
   <app-circle-countdown #circleCountdown [timeElapsed]="timeElapsed" 
     [duration]="getSessionDuration()"></app-circle-countdown>
   <div class="display-information">{{getRemainingTime()}}</div>
+  <div class="session-information"><b>Session: {{getSessionTypeString()}}</b></div>
   <hr>
   <div class="row">
     <label class="col-6">Work Duration: {{formatTime(workDuration)}}</label>
@@ -10,10 +11,12 @@
   </div>
   <hr>
   <div class="row">
-    <button type="button" class="btn btn-success" on-click='onStart()' [disabled]='isSessionActive() && !showContinue'>{{showContinue? "Continue" : "Start"}}</button>
-    <button class="btn btn-danger" on-click='onStop()' [disabled]='!isSessionActive()'>Stop</button>
-    <button class="btn btn-warning" on-click='onPause()' [disabled]='!isSessionActive() && !sessionPaused'>{{sessionPaused ? "Unpause" : "Pause"}}</button>
-    <button class="btn btn-success" on-click='toggleOptions()'>Options</button>
+    <div class="btn-container">
+      <button type="button" class="btn btn-success" on-click='onStart()' [disabled]='isSessionActive() && !showContinue'>{{showContinue? "Continue" : "Start"}}</button>
+      <button class="btn btn-danger" on-click='onStop()' [disabled]='!isSessionActive()'>Stop</button>
+      <button class="btn btn-warning" on-click='onPause()' [disabled]='!isSessionActive() && !sessionPaused'>{{sessionPaused ? "Unpause" : "Pause"}}</button>
+      <button class="btn btn-success" on-click='toggleOptions()'>Options</button>
+    </div>
   </div>
   <div *ngIf="!isSessionActive()"class='row'>
   </div>
